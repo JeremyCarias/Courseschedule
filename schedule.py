@@ -9,8 +9,8 @@ class Schedule:
         self.courses[item.get_key()] = item
 
     def print_header(self):
-        print(f"{'Subject':6} {'Catalog':6} {'Section':6} {'Component':10}"
-              f"{'Session':6} {'Units':5} {'TotEnrl':7} {'CapEnrl':7} {'Instructor'}")
+        print(f"{'Subject':8} {'Catalog':8} {'Section':8} {'Component':12}"
+              f"{'Session':8} {'Units':3} {'TotEnrl':6} {'CapEnrl':8} {'Instructor':<15}")
         print("-" * 80)
 
     def print(self):
@@ -21,10 +21,30 @@ class Schedule:
     def find_by_subject(self, subject):
         return [item for item in self.courses.values() if item.subject.upper() == subject.upper()]
 
-    def find_by_instructor_last_name(self, last_name):
-        return [item for item in self.courses.values()
-                if item.instructor.split()[-1].upper() == last_name.upper()]
+    def find_by_subject_catalog(self, subject, catalog):
+        subject = subject.upper().strip()
+        catalog = catalog.upper().strip()
+        return [
+            item for item in self.courses.values()
+            if item.subject.upper().strip() == subject and item.catalog.upper().strip() == catalog
+        ]
 
+
+  
+    def find_by_instructor_last_name(self, last_name):
+        last_name = last_name.upper().strip()
+        results = []
+
+        for item in self.courses.values():
+            if last_name in item.instructor.upper():
+                results.append(item)
+
+        return results
+                                           
+                                           
+      
+
+       
     def load_from_csv(self, filename):
         with open(filename, encoding='utf-8-sig', newline='') as csvfile:
             reader = csv.DictReader(csvfile)

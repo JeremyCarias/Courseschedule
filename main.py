@@ -1,4 +1,4 @@
-from schedule import  Schedule
+from schedule import Schedule
 
 def main():
    schedule = Schedule()

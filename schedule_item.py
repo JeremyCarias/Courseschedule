@@ -18,6 +18,5 @@ class ScheduleItem:
 
     def print(self):
         """Print formatted course details"""
-        print(f"{self.subject:6} {self.catalog:6} {self.section:6} {self.component:10}"
-              f"{self.session:6} {self.units:5} {self.tot_enrl:7} {self.cap_enrl:7}"
-              f"{self.instructor}")
+        print(f"{self.subject:8} {self.catalog:8} {self.section:8} {self.component:12}"
+              f"{self.session:8} {self.units:3} {self.tot_enrl:6} {self.cap_enrl:8}    {self.instructor:<15}")
