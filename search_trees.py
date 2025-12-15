@@ -80,21 +80,15 @@ class BSTMap:
             yield (node.key, node.value)
             yield from self._inorder_recursive(node.right)
 
-    # ------------------------ HEIGHT ------------------------
-    # TODO: STUDENT IMPLEMENTATION REQUIRED
-    # Define height as:
-    #   -1 for an empty tree
-    #    0 for a tree with only a root node
-    #
-    # A correct, recursive implementation should compute
-    # the number of edges on the longest root-to-leaf path.
-    #
-    # def height(self):
-    #     """Return the height of the BST (students must implement)."""
-    #     pass
-    # ---------------------------------------------------------
+    
 
-
+# BSTMap class
+    def height(self):
+        def _height(node):
+            if node is None:
+                return -1
+            return 1 + max(_height(node.left), _height(node.right))
+        return _height(self._root)
 
 # ---------------------------------------------------------
 # ---------------------- AVL TREE MAP ---------------------
@@ -228,6 +222,13 @@ class AVLTreeMap:
                            self._get_height(y.right))
 
         return y
+
+    def height(self):
+        def _height(node):
+            if node is None:
+                return -1
+            return 1 + max(_height(node.left), _height(node.right))
+        return _height(self._root)
 
     # ------------------------ HEIGHT ------------------------
     # TODO: STUDENT IMPLEMENTATION REQUIRED
