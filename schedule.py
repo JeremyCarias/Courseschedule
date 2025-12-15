@@ -1,67 +1,42 @@
-import csv
+from search_trees import BSTMap, AVLTreeMap
 from schedule_item import ScheduleItem
 
 class Schedule:
     def __init__(self):
-        self.courses = {}
+        self.bst = BSTMap()
+        self.avl = AVLTreeMap()
 
-    def add_entry(self, item: ScheduleItem):
-        self.courses[item.get_key()] = item
+    def add_entry(self, item,):
+        key = item.get_key()
+        self.bst.insert(key, item)
+        self.avl.insert(key, item)
 
-    def print_header(self):
-        print(f"{'Subject':8} {'Catalog':8} {'Section':8} {'Component':12}"
-              f"{'Session':8} {'Units':3} {'TotEnrl':6} {'CapEnrl':8} {'Instructor':<15}")
-        print("-" * 80)
 
-    def print(self):
-        self.print_header()
-        for item in self.courses.values():
-            item.print()
+    def find_by_subject(self, subject, tree='bst'):
+        subject = subject.upper().strip()
+        tree_map = self.bst if tree == 'bst' else self.avl
+        return [item for _, item in tree_map.inorder_items() if item.subject.upper().strip() == subject]
 
-    def find_by_subject(self, subject):
-        return [item for item in self.courses.values() if item.subject.upper() == subject.upper()]
-
-    def find_by_subject_catalog(self, subject, catalog):
+    def find_by_subject_catalog(self, subject, catalog, tree='bst'):
         subject = subject.upper().strip()
         catalog = catalog.upper().strip()
-        return [
-            item for item in self.courses.values()
-            if item.subject.upper().strip() == subject and item.catalog.upper().strip() == catalog
-        ]
+        tree_map = self.bst if tree == 'bst' else self.avl
+        return [item for _, item in tree_map.inorder_items() if item.subject.upper().strip() == subject and item.catalog.upper().strip() == catalog]
 
-
-  
-    def find_by_instructor_last_name(self, last_name):
+    def find_by_instructor_last_name(self, last_name, tree='bst'):
         last_name = last_name.upper().strip()
-        results = []
+        tree_map = self.bst if tree == 'bst' else self.avl
+        return [item for _, item in tree_map.inorder_items() if last_name in item.instructor.upper().strip()]
 
-        for item in self.courses.values():
-            if last_name in item.instructor.upper():
-                results.append(item)
-
-        return results
+    def print(self, tree='bst'):
+        tree_map = self.bst if tree == 'bst' else self.avl
+        print_header()
+        for _, item in tree_map.inorder_items():
+            item.print()
+        
                                            
                                            
       
 
        
-    def load_from_csv(self, filename):
-        with open(filename, encoding='utf-8-sig', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                try:
-                   item = ScheduleItem(
-                        subject=row['Subject'],
-                        catalog=row['Catalog'],
-                        section=row['Section'],
-                        component=row['Component'],
-                        session=row['Session'],
-                        units=int(row['Units']),
-                        tot_enrl=int(row['TotEnrl']),
-                        cap_enrl=int(row['CapEnrl']),
-                        instructor=row['Instructor']
-                   )
-                   self.add_entry(item)
-                except ValueError:
-                    continue
-                 
+    
